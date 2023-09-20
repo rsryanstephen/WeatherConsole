@@ -1,7 +1,7 @@
 ﻿using Domain.Interfaces;
 using Domain.Models.WeatherStack;
 
-namespace Domain.Utilities.PdfOutput;
+namespace Domain.PdfOutput;
 
 public class HtmlBuilder : IHtmlBuilder
 {

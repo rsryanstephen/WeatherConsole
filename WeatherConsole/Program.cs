@@ -1,7 +1,6 @@
-﻿using Domain.ConsoleLogic;
+﻿using Domain.Core;
 using Domain.Interfaces;
-using Domain.Utilities;
-using Domain.Utilities.PdfOutput;
+using Domain.PdfOutput;
 using WeatherApiService.Factories;
 
 namespace WeatherConsole;
@@ -20,7 +19,7 @@ internal abstract class UiConsole
         var filePathValidator = new FilePathService(exitService, consoleWrapper);
         var htmlGenerator = new HtmlBuilder();
         var pdfService = new PdfService(filePathValidator, htmlGenerator, consoleWrapper);
-        var outputProvider = new ResponseProcessor(pdfService, exitService, consoleWrapper);
+        var outputProvider = new ApiResponseProcessor(pdfService, exitService, consoleWrapper);
         
         var weatherApiService = ApiServiceFactory.GetWeatherApiService();
         

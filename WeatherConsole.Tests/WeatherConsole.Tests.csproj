@@ -24,6 +24,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Domain\Domain.csproj" />
+      <ProjectReference Include="..\WeatherConsole\WeatherConsole.csproj" />
     </ItemGroup>
 
 </Project>

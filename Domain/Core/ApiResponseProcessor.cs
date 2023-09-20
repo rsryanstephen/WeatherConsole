@@ -1,15 +1,15 @@
 ﻿using Domain.Interfaces;
 using Domain.Models.WeatherStack;
 
-namespace Domain.ConsoleLogic;
+namespace Domain.Core;
 
-public class ResponseProcessor: IResponseProcessor
+public class ApiResponseProcessor: IResponseProcessor
 {
     private readonly IPdfService _pdfService;
     private readonly IExitService _exitService;
     private readonly IConsoleWrapper _consoleWrapper;
 
-    public ResponseProcessor(IPdfService pdfService, IExitService exitService, IConsoleWrapper consoleWrapper)
+    public ApiResponseProcessor(IPdfService pdfService, IExitService exitService, IConsoleWrapper consoleWrapper)
     {
         _pdfService = pdfService;
         _exitService = exitService;

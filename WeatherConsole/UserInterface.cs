@@ -1,7 +1,6 @@
 ﻿using Domain.Interfaces;
-using Domain.Models.WeatherStack;
 
-namespace Domain.ConsoleLogic;
+namespace WeatherConsole;
 
 public class UserInterface: IUserInterface
 {

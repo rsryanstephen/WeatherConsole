@@ -1,5 +1,5 @@
 using Domain.Interfaces;
-using Domain.Utilities;
+using Domain.PdfOutput;
 using Moq;
 
 namespace WeatherConsole.Tests;

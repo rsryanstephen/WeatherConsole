@@ -1,6 +1,6 @@
 ﻿using Domain.Interfaces;
 
-namespace Domain.ConsoleLogic;
+namespace Domain.Core;
 
 public class ConsoleWrapper: IConsoleWrapper
 {

@@ -1,4 +1,4 @@
-﻿using Domain.ConsoleLogic;
+﻿using Domain.Core;
 using Domain.Models.WeatherStack;
 using Moq;
 
@@ -17,7 +17,7 @@ public class ResponseProcessorTests
         var mockPdfService = SharedMocks.MockPdfService();
         var mockExitService = SharedMocks.MockExitService();
 
-        var responseProcessor = new ResponseProcessor(mockPdfService.Object, mockExitService.Object, mockConsoleWrapper.Object);
+        var responseProcessor = new ApiResponseProcessor(mockPdfService.Object, mockExitService.Object, mockConsoleWrapper.Object);
 
         // Act
         var success = await responseProcessor.ProcessApiResponse("cityName", null);
@@ -47,7 +47,7 @@ public class ResponseProcessorTests
         var mockPdfService = SharedMocks.MockPdfService();
         var mockExitService = SharedMocks.MockExitService();
 
-        var responseProcessor = new ResponseProcessor(mockPdfService.Object, mockExitService.Object, mockConsoleWrapper.Object);
+        var responseProcessor = new ApiResponseProcessor(mockPdfService.Object, mockExitService.Object, mockConsoleWrapper.Object);
 
         var response = SharedMocks.MockApiResponse();
         

@@ -1,4 +1,4 @@
-﻿using Domain.ConsoleLogic;
+﻿using Domain.Core;
 using Moq;
 
 namespace WeatherConsole.Tests;

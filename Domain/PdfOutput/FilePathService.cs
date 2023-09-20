@@ -1,6 +1,6 @@
 ﻿using Domain.Interfaces;
 
-namespace Domain.Utilities;
+namespace Domain.PdfOutput;
 
 public class FilePathService : IFilePathService
 {
