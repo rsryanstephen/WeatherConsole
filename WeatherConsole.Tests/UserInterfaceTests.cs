@@ -12,7 +12,7 @@ public class UserInterfaceTests
         // Arrange
         const string mockUserInput1 = "cityName";
         var mockConsoleWrapper = SharedMocks.MockConsoleWrapper(mockUserInput1, "");
-        var mockResponseProcessor = SharedMocks.MockResponseProcessor(mockUserInput1, true);
+        var mockResponseProcessor = SharedMocks.MockResponseProcessor();
         var mockWeatherDetails = SharedMocks.MockApiResponse();
         var mockWeatherApiService = SharedMocks.MockWeatherApiService(mockUserInput1, mockWeatherDetails);
         var mockExitService = SharedMocks.MockExitService();
@@ -33,7 +33,7 @@ public class UserInterfaceTests
         mockWeatherApiService.Verify(x => x.GetCurrentWeather(mockUserInput1), Times.Once);
         
         // Assert that mockResponseProcessor was called with the first user input and the response from the api
-        mockResponseProcessor.Verify(x => x.ProcessApiResponse(mockUserInput1, mockWeatherDetails), Times.Once);
+        mockResponseProcessor.Verify(x => x.ProcessApiResponse(mockWeatherDetails), Times.Once);
         
         // Assert that the starting message was printed once
         mockConsoleWrapper.Verify(x => x.WriteLine("Enter city name to get current weather:"), Times.Once);
@@ -60,7 +60,7 @@ public class UserInterfaceTests
         const string mockUserInput1 = "  ";
         const string mockUserInput2 = "  city";
         var mockConsoleWrapper = SharedMocks.MockConsoleWrapper(mockUserInput1, mockUserInput2);
-        var mockResponseProcessor = SharedMocks.MockResponseProcessor(mockUserInput2, true);
+        var mockResponseProcessor = SharedMocks.MockResponseProcessor();
         var mockWeatherDetails = SharedMocks.MockApiResponse();
         var mockWeatherApiService = SharedMocks.MockWeatherApiService(mockUserInput2, mockWeatherDetails);
         var mockExitService = SharedMocks.MockExitService();
@@ -95,7 +95,7 @@ public class UserInterfaceTests
         mockWeatherApiService.Verify(x => x.GetCurrentWeather(mockUserInput2), Times.Once);
         
         // Assert that mockResponseProcessor was called with the second user input and the response from the api
-        mockResponseProcessor.Verify(x => x.ProcessApiResponse(mockUserInput2, mockWeatherDetails), Times.Once);
+        mockResponseProcessor.Verify(x => x.ProcessApiResponse(mockWeatherDetails), Times.Once);
         
         
         mockExitService.Verify(x => x.VerifyContinue(
@@ -106,15 +106,15 @@ public class UserInterfaceTests
     
     [Fact]
     public async Task
-        Given_Valid_User_Input_But_Invalid_Response_From_The_Api_When_RequestUserInput_Then_Return_False_And_Request_Retry()
+        Given_Valid_User_Input_But_Null_Response_From_The_Api_When_RequestUserInput_Then_Return_False_And_Request_Retry()
     {
         // Arrange
         const string mockUserInput1 = "city";
         const string mockUserInput2 = "city";
         var mockConsoleWrapper = SharedMocks.MockConsoleWrapper(mockUserInput1, mockUserInput2);
-        var mockResponseProcessor = SharedMocks.MockResponseProcessor(mockUserInput2, false);
+        var mockResponseProcessor = SharedMocks.MockResponseProcessor();
         var mockWeatherDetails = SharedMocks.MockApiResponse();
-        var mockWeatherApiService = SharedMocks.MockWeatherApiService(mockUserInput2, mockWeatherDetails);
+        var mockWeatherApiService = SharedMocks.MockWeatherApiService(mockUserInput2, null);
         var mockExitService = SharedMocks.MockExitService(false);
 
         var userInterface = new UserInterface(
@@ -143,13 +143,7 @@ public class UserInterfaceTests
         // Assert that mockWeatherApiService was called with the first user input
         mockWeatherApiService.Verify(x => x.GetCurrentWeather(mockUserInput1), Times.Once);
         
-        // Assert that mockResponseProcessor was called with the first user input and the response from the api
-        mockResponseProcessor.Verify(x => x.ProcessApiResponse(mockUserInput1, mockWeatherDetails), Times.Once);
-        
-        
-        mockExitService.Verify(x => x.VerifyContinue(
-                It.IsAny<Func<Task<bool>>>(), 
-                It.IsAny<string>()), 
-            Times.Once);
+        // Assert that mockResponseProcessor was not called
+        mockResponseProcessor.Verify(x => x.ProcessApiResponse(mockWeatherDetails), Times.Never);
     }
 }

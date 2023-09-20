@@ -1,5 +1,5 @@
 using Newtonsoft.Json;
-using JsonSerializer = System.Text.Json.JsonSerializer;
+using Newtonsoft.Json.Linq;
 
 namespace WeatherApiService.Http;
 
@@ -10,23 +10,6 @@ public class HttpClientWrapper : IHttpClientWrapper
     public HttpClientWrapper(IHttpClientFactory httpClientFactory)
     {
         _client = httpClientFactory.Create();
-    }
-    
-    public async Task<T> GetAsync<T>(string requestUri)
-    {
-        await using var responseStream = await _client.GetStreamAsync(requestUri);
-        var responseObject = await JsonSerializer.DeserializeAsync<T>(responseStream);
-
-        if (responseObject == null)
-        {
-            var msg = 
-                "Null response when using HttpClient.GetStreamAsync." +
-                $"{Environment.NewLine}requestUri: '{requestUri}'";
-            
-            throw new Exception(msg);
-        }
-
-        return responseObject;
     }
 
     public async Task<T> GetFromHttpResponseAsync<T>(string requestUri)
@@ -39,12 +22,43 @@ public class HttpClientWrapper : IHttpClientWrapper
             var msg = $"{response.StatusCode} status returned for 'GetAsync'." +
                       $"{Environment.NewLine}requestUri: '{requestUri}'";
             
-            throw new ApplicationException(msg);
+            throw new HttpRequestException(msg);
         }
 
         var json = await response.Content.ReadAsStringAsync();
+        
+        CheckForFailedResponseJson(json, requestUri);
 
         return JsonConvert.DeserializeObject<T>(json) 
                ?? throw new Exception("HttpResponse.Content.ReadAsStringAsync() returned null");
+    }
+    
+    private static void CheckForFailedResponseJson(string? json, string requestUri)
+    {
+        if (json == null)
+        {
+            var msg = 
+                "Null response when using HttpClient.GetFromHttpResponseAsync." +
+                $"{Environment.NewLine}requestUri: '{requestUri}'";
+            
+            throw new Exception(msg);
+        }
+        
+        var jToken = JToken.Parse(json);
+
+        if (JTokenHasError(jToken))
+        {
+            var msg = $"Error response returned for 'GetAsync'." +
+                      $"{Environment.NewLine}requestUri: '{requestUri}'" +
+                      $"{Environment.NewLine}json: '{json}'";
+            
+            throw new KeyNotFoundException(msg);
+        }
+    }
+    
+    private static bool JTokenHasError(JToken jToken)
+    {
+        return jToken["error"] != null || 
+               (jToken["success"] != null && jToken["success"]?.Value<bool>() == false);
     }
 }

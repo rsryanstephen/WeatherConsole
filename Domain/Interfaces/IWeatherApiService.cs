@@ -4,5 +4,5 @@ namespace Domain.Interfaces;
 
 public interface IWeatherApiService
 {
-    Task<ApiResponse> GetCurrentWeather(string cityName);
+    Task<ApiResponse?> GetCurrentWeather(string cityName);
 }

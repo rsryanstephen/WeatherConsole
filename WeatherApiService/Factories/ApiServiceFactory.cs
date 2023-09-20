@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces;
+﻿using Domain.Core;
+using Domain.Interfaces;
 using WeatherApiService.ApiClients;
 using WeatherApiService.Http;
 
@@ -16,9 +17,10 @@ public static class ApiServiceFactory
 
     private static IWeatherApiService GetWeatherStackClient()
     {
+        var consoleWrapper = new ConsoleWrapper();
         var factory = new HttpClientFactory();
         var httpClient = new HttpClientWrapper(factory);
-        var weatherService = new WeatherStackClient(httpClient);
+        var weatherService = new WeatherStackClient(httpClient, consoleWrapper);
 
         return weatherService;
     }

@@ -16,23 +16,12 @@ public class ApiResponseProcessor: IResponseProcessor
         _consoleWrapper = consoleWrapper;
     }
 
-    /// <returns>boolean success variable</returns>
-    public async Task<bool> ProcessApiResponse(string cityName, ApiResponse? response)
+    public async Task ProcessApiResponse(ApiResponse response)
     {
-        if (response == null || response?.CurrentWeather?.ObservationTime == null) 
-        {
-            _consoleWrapper.WriteLine($"Weather details for \"{cityName}\" are not available in WeatherStack.");
-            _consoleWrapper.WriteLine("Are you sure that you spelt the name of that city correctly?");
-            return await Task.FromResult(false);
-        }
-
         PrintWeatherSummary(response);
         
         const string continueMsg = "\nSave current weather to a pdf document? (y/n)";
-        
         await _exitService.VerifyContinue(SaveWeatherToPdf, response, continueMsg);
-
-        return true;
     }
     
     private async Task<ApiResponse> SaveWeatherToPdf(ApiResponse response)

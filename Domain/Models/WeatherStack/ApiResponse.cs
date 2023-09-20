@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace Domain.Models.WeatherStack;
 
@@ -17,15 +16,12 @@ public class ApiResponse
     }
     
     [JsonProperty("request")]
-    [JsonPropertyName("request")]
     public Request Request { get; }
     
     [JsonProperty("location")]
-    [JsonPropertyName("location")]
     public Location Location { get; }
     
     [JsonProperty("current")]
-    [JsonPropertyName("current")]
     public CurrentWeather CurrentWeather { get; }
 
     public override string ToString()

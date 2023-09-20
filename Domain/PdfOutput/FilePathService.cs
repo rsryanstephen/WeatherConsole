@@ -64,9 +64,12 @@ public class FilePathService : IFilePathService
     {
         if (!Directory.Exists(filePath))
         {
-            var msg = $"Provided filePath does not exist: \"{filePath}\"";
+            var msg = $"Provided filePath does not exist: \"{filePath}\""
+                      + "\nIf you are on Windows, provide filepaths that use backslashes \"\\\", "
+                      + "otherwise use forward slashes";
 
             _consoleWrapper.WriteLine(msg);
+            
             return false;
         }
 

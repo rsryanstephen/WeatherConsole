@@ -34,12 +34,15 @@ public class UserInterface: IUserInterface
 
         var response = await _weatherApiService.GetCurrentWeather(cityName);
 
-        var success = await _responseProcessor.ProcessApiResponse(cityName, response);
+        if (response == null)
+        {
+            const string retryMsg = "Would you like to try again? (y/n)";
+            return await _exitService.VerifyContinue(RequestUserInput, retryMsg);
+        }
+            
+        await _responseProcessor.ProcessApiResponse(response);
 
-        var continueMsg = success
-            ? "Would you like to get the current weather details of another city? (y/n)"
-            : "Would you like to try again? (y/n)";
-        
+        const string continueMsg = "Would you like to get the current weather details of another city? (y/n)";
         return await _exitService.VerifyContinue(RequestUserInput, continueMsg);
     }
     

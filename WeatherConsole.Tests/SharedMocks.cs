@@ -55,16 +55,15 @@ public static class SharedMocks
         return mock;
     }
 
-    public static Mock<IResponseProcessor> MockResponseProcessor(string cityName, bool success)
+    public static Mock<IResponseProcessor> MockResponseProcessor()
     {
         var mock = new Mock<IResponseProcessor>();
-        mock.Setup(x => x.ProcessApiResponse(cityName, It.IsAny<ApiResponse>()))
-            .ReturnsAsync(success);
+        mock.Setup(x => x.ProcessApiResponse(It.IsAny<ApiResponse>()));
 
         return mock;
     }
 
-    public static Mock<IWeatherApiService> MockWeatherApiService(string cityName, ApiResponse returnVal)
+    public static Mock<IWeatherApiService> MockWeatherApiService(string cityName, ApiResponse? returnVal)
     {
         var mock = new Mock<IWeatherApiService>();
         
