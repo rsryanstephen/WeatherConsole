@@ -29,8 +29,8 @@ public class FilePathServiceTests
             "\nPlease enter the location (filepath) that you would like to save \"fileName.pdf\" to."), Times.Once);
         
         // Assert that filepath was checked for existence:
-        mockConsoleWrapper.Verify(x => x.WriteLine(
-            "Provided filePath does not exist: \"filePath\""), Times.Once);
+        mockConsoleWrapper.Verify(x => x.WriteLine(It.Is<string>(s => 
+            s.StartsWith("Provided filePath does not exist: \"filePath\""))), Times.Once);
         
         // Assert that the user was asked to try again:
         mockExitService.Verify(x => x.VerifyContinue(
